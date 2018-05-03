@@ -1,8 +1,10 @@
-package space.tritin.jetbrainsinternshipstepik.ui
+package space.tritin.jetbrainsinternshipstepik.ui.adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import space.tritin.jetbrainsinternshipstepik.ui.FavoriteFragment
+import space.tritin.jetbrainsinternshipstepik.ui.SearchFragment
 
 /**
  * <p>Date: 02.05.18</p>
