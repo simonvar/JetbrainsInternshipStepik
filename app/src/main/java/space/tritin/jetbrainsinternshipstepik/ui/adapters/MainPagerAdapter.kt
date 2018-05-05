@@ -17,7 +17,7 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
 
-        val fragment = when (position){
+        val fragment: Fragment = when (position){
             0 -> SearchFragment()
             1 -> FavoriteFragment()
             else -> SearchFragment()

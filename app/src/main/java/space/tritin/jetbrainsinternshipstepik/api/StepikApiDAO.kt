@@ -8,6 +8,6 @@ import retrofit2.Call
  */
 interface StepikApiDAO {
 
-    fun search(query: String, page: Int): Call<StepikCoursesResponse>
+    fun search(query: String, page: Int): Call<StepikSearchResponse>
 
 }

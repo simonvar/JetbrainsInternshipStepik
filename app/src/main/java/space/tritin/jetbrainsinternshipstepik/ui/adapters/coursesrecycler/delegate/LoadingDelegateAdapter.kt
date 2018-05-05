@@ -1,9 +1,11 @@
-package space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler
+package space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import space.tritin.jetbrainsinternshipstepik.R
 import space.tritin.jetbrainsinternshipstepik.common.inflate
+import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewType
+import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewTypeDelegateAdapter
 
 /**
  * <p>Date: 04.05.18</p>

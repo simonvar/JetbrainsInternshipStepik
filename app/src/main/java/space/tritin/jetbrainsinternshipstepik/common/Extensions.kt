@@ -32,7 +32,7 @@ fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
 /**
  * @param imageUrl URL загружаемого изображения
  * */
-fun ImageView.loadImg(imageUrl: String) {
+fun ImageView.loadImg(imageUrl: String?) {
     if (TextUtils.isEmpty(imageUrl)) {
         Picasso.with(context).load(R.drawable.tools_cover).into(this)
     } else {

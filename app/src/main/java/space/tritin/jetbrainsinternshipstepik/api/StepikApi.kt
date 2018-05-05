@@ -12,6 +12,6 @@ import retrofit2.http.Query
  */
 interface StepikApi{
 
-    @GET("/search-results")
-    fun search(@Query("query") query: String, @Query("page") page: Int) : Call<StepikCoursesResponse>
+    @GET("api/search-results")
+    fun search(@Query("query") query: String, @Query("page") page: Int) : Call<StepikSearchResponse>
 }

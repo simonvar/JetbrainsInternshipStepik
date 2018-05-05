@@ -7,4 +7,5 @@ package space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler
 object AdapterConstants {
     val COURSE = 0
     val LOADING = 1
+    val END = 2
 }

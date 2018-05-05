@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JetbrainsInternshipStepik</string>
+    <string name="app_name">StepikFavorite</string>
     <string name="desc_course_cover_image">Course cover image</string>
     <string name="search">Search</string>
 </resources>

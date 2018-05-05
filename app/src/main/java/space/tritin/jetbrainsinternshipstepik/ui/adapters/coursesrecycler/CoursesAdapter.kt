@@ -3,7 +3,10 @@ package space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import space.tritin.jetbrainsinternshipstepik.mvp.models.CourseModel
+import space.tritin.jetbrainsinternshipstepik.mvp.models.StepikCourseItem
+import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.CourseDelegateAdapter
+import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.EndDelegateAdapter
+import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.LoadingDelegateAdapter
 import java.util.ArrayList
 
 /**
@@ -22,14 +25,21 @@ class CoursesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    private val endItem = object : ViewType {
+        override fun getViewType(): Int {
+            return AdapterConstants.END
+        }
+    }
+
     init {
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
         delegateAdapters.put(AdapterConstants.COURSE, CourseDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.END, EndDelegateAdapter())
         items = ArrayList()
         items.add(loadingItem)
     }
 
-    fun addCourses(courses: List<CourseModel>) {
+    fun addCourses(courses: List<StepikCourseItem>) {
         // сначала убираем загрузку
         val initPosition = items.size - 1
         items.removeAt(initPosition)
@@ -41,17 +51,31 @@ class CoursesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyItemRangeChanged(initPosition, items.size + 1 /* plus loading item */)
     }
 
-    fun clearAndAddCourses(courses: List<CourseModel>){
+    fun clearAndAddCourses(courses: List<StepikCourseItem>){
         items.clear()
-        notifyItemRangeRemoved(0, getLastPosition())
         items.addAll(courses)
         items.add(loadingItem)
-        notifyItemRangeInserted(0, items.size)
+        notifyItemRangeChanged(0, items.size)
+
     }
 
-    fun getCourses(): List<CourseModel> = items
+    fun clear(){
+        notifyItemRangeRemoved(0, getLastPosition())
+        items.clear()
+        items.add(loadingItem)
+
+    }
+
+    fun listEnd(){
+        val initPosition = items.size - 1
+        items.removeAt(initPosition)
+        items.add(endItem)
+        notifyItemChanged(initPosition)
+    }
+
+    fun getCourses(): List<StepikCourseItem> = items
             .filter { it.getViewType() == AdapterConstants.COURSE }
-            .map { it as CourseModel }
+            .map { it as StepikCourseItem }
 
     private fun getLastPosition() = if (items.lastIndex == -1) 0 else items.lastIndex
 

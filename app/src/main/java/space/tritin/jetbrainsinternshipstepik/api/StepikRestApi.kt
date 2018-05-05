@@ -13,14 +13,14 @@ class StepikRestApi: StepikApiDAO {
 
     init {
         val retrofit = Retrofit.Builder()
-                .baseUrl("https://stepik.org/api")
+                .baseUrl("https://stepik.org/")
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 
         stepikApi = retrofit.create(StepikApi::class.java)
     }
 
-    override fun search(query: String, page: Int): Call<StepikCoursesResponse> {
+    override fun search(query: String, page: Int): Call<StepikSearchResponse> {
         return stepikApi.search(query, page)
     }
 }

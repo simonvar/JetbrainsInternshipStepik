@@ -36,7 +36,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
 
     // ActiveAndroid DB
-    implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    implementation "com.reactiveandroid:reactiveandroid:1.2.1"
+    implementation "com.pawegio.kandroid:kandroid:0.8.5@aar"
+
 
     // MVP
     implementation "com.arello-mobile:moxy:$moxy_version"
@@ -69,4 +71,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation 'com.nhaarman:mockito-kotlin:0.7.0'
+    testImplementation 'org.jetbrains.spek:spek:1.0.25'
+}
+
+kapt {
+    generateStubs = true
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://repository.jetbrains.com/all"
+    }
 }

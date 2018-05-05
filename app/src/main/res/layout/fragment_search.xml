@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false"
                 app:queryHint="Find interesting courses!"
+                android:layout_marginEnd="32dp"
                 android:layout_centerHorizontal="true" />
 
         </android.support.v7.widget.Toolbar>
