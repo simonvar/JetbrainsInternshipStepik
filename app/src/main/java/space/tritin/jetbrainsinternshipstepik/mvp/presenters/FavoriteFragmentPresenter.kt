@@ -25,6 +25,7 @@ class FavoriteFragmentPresenter : MvpPresenter<RecyclerFragmentView>(), RequestC
 
     override fun requestCoursesNew() {
         val courses = stepikCourseItemDAO.loadAllFavorite()
+        viewState.clear()
         if (courses != null && courses.isNotEmpty()){
             viewState.newList(courses)
         }

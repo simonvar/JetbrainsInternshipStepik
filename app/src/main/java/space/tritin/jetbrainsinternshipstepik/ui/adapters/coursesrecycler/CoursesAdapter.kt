@@ -4,6 +4,7 @@ import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import space.tritin.jetbrainsinternshipstepik.mvp.models.StepikCourseItem
+import space.tritin.jetbrainsinternshipstepik.mvp.presenters.FavoritePresenter
 import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.CourseDelegateAdapter
 import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.EndDelegateAdapter
 import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.delegate.LoadingDelegateAdapter
@@ -13,7 +14,10 @@ import java.util.ArrayList
  * @author varivoda.s
  * created 03.05.2018.
  */
-class CoursesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CoursesAdapter(
+        favoritePresenter: FavoritePresenter,
+        from: Int
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: ArrayList<ViewType>
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
@@ -33,7 +37,7 @@ class CoursesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
-        delegateAdapters.put(AdapterConstants.COURSE, CourseDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.COURSE, CourseDelegateAdapter(favoritePresenter = favoritePresenter, from = from))
         delegateAdapters.put(AdapterConstants.END, EndDelegateAdapter())
         items = ArrayList()
         items.add(loadingItem)
@@ -55,8 +59,7 @@ class CoursesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         items.clear()
         items.addAll(courses)
         items.add(loadingItem)
-        notifyItemRangeChanged(0, items.size)
-
+        notifyItemRangeRemoved(0, items.size)
     }
 
     fun clear(){

@@ -70,6 +70,7 @@ class SearchFragmentPresenter : MvpPresenter<RecyclerFragmentView>(), RequestCou
         }
     }
 
+
     fun search(query: String){
         viewState.clear()
 
@@ -84,9 +85,6 @@ class SearchFragmentPresenter : MvpPresenter<RecyclerFragmentView>(), RequestCou
         requestCoursesNew()
     }
 
-    fun updateFavorite(){
-        
-    }
 
 
 }

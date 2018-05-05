@@ -14,6 +14,7 @@ import space.tritin.jetbrainsinternshipstepik.common.inflate
 import space.tritin.jetbrainsinternshipstepik.common.loadImg
 import space.tritin.jetbrainsinternshipstepik.mvp.models.StepikCourseItem
 import space.tritin.jetbrainsinternshipstepik.mvp.models.StepikCourseItemDAO
+import space.tritin.jetbrainsinternshipstepik.mvp.presenters.FavoritePresenter
 import space.tritin.jetbrainsinternshipstepik.mvp.presenters.RequestCourses
 import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewType
 import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewTypeDelegateAdapter
@@ -24,8 +25,9 @@ import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewTy
  */
 class CourseDelegateAdapter(
         val courseItemDAO: StepikCourseItemDAO = StepikCourseItemDAO(),
-        val favoriteUpdater: RequestCourses? = null
-) : ViewTypeDelegateAdapter {
+        val favoritePresenter: FavoritePresenter,
+        val from: Int
+        ) : ViewTypeDelegateAdapter {
 
 
     override fun onCreateViewHolder(parent: ViewGroup) = TurnsViewHolder(parent)
@@ -38,6 +40,9 @@ class CourseDelegateAdapter(
 
     inner class TurnsViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(parent.inflate(R.layout.item_course)) {
         fun bind(item: StepikCourseItem) = with(itemView){
+
+            item_course_image.loadImg(item.thumbnail)
+            item_course_title.text = item.title
 
             itemView.setOnClickListener {
                 val url = "https://stepik.org/course/${item.id}"
@@ -54,32 +59,31 @@ class CourseDelegateAdapter(
 
 
             item_course_favorite.setOnClickListener {
-                changeFavorite(item)
-                updateViewFavorite(item, itemView)
+                changeFavorite(item, itemView)
+
+                if (from == FavoritePresenter.FROM.SEARCH) {
+                    updateViewFavorite(item, itemView)
+                }
             }
 
-            item_course_image.loadImg(item.thumbnail)
-            item_course_title.text = item.title
 
             item.isFavorite = courseItemDAO.isFavorite(item.id)
             updateViewFavorite(item, itemView)
         }
 
-        private fun changeFavorite(item: StepikCourseItem){
+        private fun changeFavorite(item: StepikCourseItem, view: View){
             if (item.isFavorite){
                 courseItemDAO.removeFromFavorite(item)
+                favoritePresenter.removeFavorite(item, from)
                 item.isFavorite = false
             } else {
                 item.isFavorite = true
                 courseItemDAO.addToFavorite(item)
+                favoritePresenter.addFavorite(item, from)
             }
         }
 
         private fun updateViewFavorite(item: StepikCourseItem, view: View){
-            if(favoriteUpdater != null){
-                favoriteUpdater.requestCoursesNew()
-            }
-
             if (item.isFavorite){
                 view.item_course_favorite.setImageDrawable(view.resources.getDrawable(R.drawable.ic_star))
             } else {

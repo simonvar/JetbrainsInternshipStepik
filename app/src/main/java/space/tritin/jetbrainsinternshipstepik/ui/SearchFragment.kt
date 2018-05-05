@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import space.tritin.jetbrainsinternshipstepik.R
@@ -13,9 +14,13 @@ import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.Course
 import space.tritin.jetbrainsinternshipstepik.ui.base.RxMvpFragment
 import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.PresenterType
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import io.reactivex.disposables.Disposable
 import space.tritin.jetbrainsinternshipstepik.mvp.models.StepikCourseItem
+import space.tritin.jetbrainsinternshipstepik.mvp.presenters.FavoritePresenter
 import space.tritin.jetbrainsinternshipstepik.mvp.presenters.SearchFragmentPresenter
+import space.tritin.jetbrainsinternshipstepik.mvp.views.FavoriteView
 import space.tritin.jetbrainsinternshipstepik.mvp.views.RecyclerFragmentView
 
 
@@ -23,25 +28,33 @@ import space.tritin.jetbrainsinternshipstepik.mvp.views.RecyclerFragmentView
  * <p>Date: 02.05.18</p>
  * @author Simon
  */
-class SearchFragment : RxMvpFragment(), RecyclerFragmentView {
+class SearchFragment : RxMvpFragment(), RecyclerFragmentView, FavoriteView {
 
     @InjectPresenter
     lateinit var presenter: SearchFragmentPresenter
+
+    @InjectPresenter(type = PresenterType.GLOBAL, tag = FavoritePresenter.TAG)
+    lateinit var presenterFavorite: FavoritePresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         val linearLayout = LinearLayoutManager(context)
         search_recycler.apply {
             setHasFixedSize(true)
             layoutManager = linearLayout
             clearOnScrollListeners()
             search_recycler.addOnScrollListener(InfiniteScrollListener({ presenter.requestCoursesAdd() }, linearLayout))
-            adapter = CoursesAdapter()
+            adapter = CoursesAdapter(favoritePresenter = presenterFavorite, from = FavoritePresenter.FROM.SEARCH)
         }
 
+        swipe_refresh.setOnRefreshListener {
+            presenter.requestCoursesNew()
+            swipe_refresh.isRefreshing = false
+        }
 
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -62,6 +75,20 @@ class SearchFragment : RxMvpFragment(), RecyclerFragmentView {
         search_view.setOnCloseListener {
             presenter.searchClose()
             true
+        }
+    }
+
+    override fun addFavorite(stepikCourseItem: StepikCourseItem, from: Int) {
+        Log.d(javaClass.simpleName, "From $from")
+        if (from == FavoritePresenter.FROM.FAVORITE){
+            presenter.restore()
+        }
+    }
+
+    override fun removeFavorite(stepikCourseItem: StepikCourseItem, from: Int) {
+        Log.d(javaClass.simpleName, "From $from")
+        if (from == FavoritePresenter.FROM.FAVORITE){
+            presenter.restore()
         }
     }
 
