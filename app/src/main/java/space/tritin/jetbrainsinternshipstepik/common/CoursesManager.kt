@@ -25,7 +25,7 @@ class CoursesManager(private val api: StepikApiDAO = StepikRestApi()) {
             if (response.isSuccessful){
                 val dataResponse = response.body()?.`search-results`
                 val courses = dataResponse?.map {
-                    StepikCourseItem(it.course, it.course_title, it.course_cover)
+                    StepikCourseItem(it.course.toLong(), it.course_title, it.course_cover)
                 }
 
                 val stepikCourses = StepikCourses(page + 1, courses ?: listOf())

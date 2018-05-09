@@ -63,7 +63,7 @@ class SearchFragmentPresenter : MvpPresenter<RecyclerFragmentView>(), RequestCou
     fun restore(){
         if (stepikCourses != null){
             viewState.newList(stepikCourses!!.courses)
-            Log.d(javaClass.simpleName, "Resore List")
+            Log.d(javaClass.simpleName, "Restore List")
         } else {
             requestCoursesNew()
             Log.d(javaClass.simpleName, "Load New List")

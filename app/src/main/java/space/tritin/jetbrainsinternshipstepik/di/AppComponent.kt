@@ -2,7 +2,6 @@ package space.tritin.jetbrainsinternshipstepik.di
 
 import dagger.Component
 import space.tritin.jetbrainsinternshipstepik.mvp.presenters.FavoriteFragmentPresenter
-import space.tritin.jetbrainsinternshipstepik.mvp.presenters.FavoritePresenter
 import space.tritin.jetbrainsinternshipstepik.mvp.presenters.SearchFragmentPresenter
 import javax.inject.Singleton
 
@@ -16,6 +15,5 @@ interface AppComponent {
 
     fun inject(searchFragmentPresenter: SearchFragmentPresenter)
     fun inject(favoriteFragmentPresenter: FavoriteFragmentPresenter)
-    fun inject(favoritePresenter: FavoritePresenter)
 
 }

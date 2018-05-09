@@ -17,21 +17,14 @@ import space.tritin.jetbrainsinternshipstepik.ui.adapters.coursesrecycler.ViewTy
 @Table(name = "Favorite", database = AppDatabase::class)
 class StepikCourseItem : ViewType, Parcelable, Model {
 
-
     @PrimaryKey
-    var dataID: Long = 0
-
-    @Column(name = "courseId")
-    var id: Int = 0
+    var id: Long = 0
 
     @Column(name = "title")
     var title: String = ""
 
     @Column(name = "thumbnail")
     var thumbnail: String? = null
-
-    @Column(name = "favorite")
-    var isFavorite: Boolean = false
 
     companion object {
         @JvmField
@@ -41,7 +34,7 @@ class StepikCourseItem : ViewType, Parcelable, Model {
 
     constructor()
 
-    constructor(id: Int, title: String, thumbnail: String?) {
+    constructor(id: Long, title: String, thumbnail: String?) {
         this.id = id
         this.title = title
         this.thumbnail = thumbnail
@@ -49,13 +42,13 @@ class StepikCourseItem : ViewType, Parcelable, Model {
 
 
     protected constructor(parcelIn: Parcel) : this(
-            parcelIn.readInt(),
+            parcelIn.readLong(),
             parcelIn.readString(),
             parcelIn.readString()
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(id)
+        dest.writeLong(id)
         dest.writeString(title)
         dest.writeString(thumbnail)
     }
@@ -71,14 +64,14 @@ class StepikCourseItem : ViewType, Parcelable, Model {
         other as StepikCourseItem
 
         if (id != other.id) return false
-        if (title != other.title) return false
-        if (thumbnail != other.thumbnail) return false
+//        if (title != other.title) return false
+//        if (thumbnail != other.thumbnail) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = id
+        var result = id.hashCode()
         result = 31 * result + title.hashCode()
         result = 31 * result + (thumbnail?.hashCode() ?: 0)
         return result

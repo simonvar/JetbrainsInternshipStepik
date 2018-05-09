@@ -1,5 +1,6 @@
 package space.tritin.jetbrainsinternshipstepik.mvp.models
 
+import android.util.Log
 import com.reactiveandroid.query.Select
 
 /**
@@ -8,14 +9,20 @@ import com.reactiveandroid.query.Select
  */
 class StepikCourseItemDAO {
 
-    fun addToFavorite(courseItem: StepikCourseItem) = courseItem.save()
+    fun addToFavorite(courseItem: StepikCourseItem) {
+        courseItem.save()
+        Log.d(javaClass.simpleName, "Save to DB ${courseItem.title}")
+    }
 
-    fun removeFromFavorite(courseItem: StepikCourseItem) = courseItem.delete()
+    fun removeFromFavorite(courseItem: StepikCourseItem) {
+        courseItem.delete()
+        Log.d(javaClass.simpleName, "Remove from DB ${courseItem.title}")
+    }
 
     fun loadAllFavorite(): MutableList<StepikCourseItem>? = Select.from(StepikCourseItem::class.java).fetch()
 
-    fun isFavorite(id: Int): Boolean{
-        val course = Select.from(StepikCourseItem::class.java).where("courseId = ?", id).fetchSingle()
+    fun isFavorite(id: Long): Boolean {
+        val course = Select.from(StepikCourseItem::class.java).where("id = ?", id).fetchSingle()
         return course != null
     }
 
